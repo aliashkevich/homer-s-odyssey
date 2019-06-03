@@ -5,23 +5,65 @@ export default class MyComponent extends React.Component {
     super(props);
 
     this.state = {
-      email: '',
+      email: 'mon@email.com',
+      password: 'monPassw0rd',
+      passwordbis: 'monPassw0rd',
+      name: 'James',
+      lastname: 'Bond',
     };
 
-    this.updateEmailField = this.updateEmailField.bind(this);
+    this.updateInputField = this.updateInputField.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  updateEmailField(e) {
+  updateInputField(e) {
     this.setState({
-      email: e.target.value,
+      [e.target.name]: e.target.value,
     });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log(this.state);
   }
 
   render() {
     return (
       <div>
-        <h1>{this.state.email}</h1>
-        <input type='email' name='email' onChange={this.updateEmailField} />
+        <form>
+          <h1>{JSON.stringify(this.state, 1, 1)}</h1>
+          <input
+            type='email'
+            name='email'
+            onChange={this.updateInputField}
+            placeholder='Email'
+          />
+          <input
+            type='password'
+            name='password'
+            onChange={this.updateInputField}
+            placeholder='Password'
+          />
+          <input
+            type='password'
+            name='passwordbis'
+            onChange={this.updateInputField}
+            placeholder='Confirm Password'
+          />
+          <input
+            type='text'
+            name='fname'
+            onChange={this.updateInputField}
+            placeholder='First name'
+          />
+          <input
+            type='text'
+            name='lname'
+            onChange={this.updateInputField}
+            placeholder='Last name'
+          />
+          <input type='submit' value='Submit' onClick={this.handleSubmit} />
+        </form>
       </div>
     );
   }
