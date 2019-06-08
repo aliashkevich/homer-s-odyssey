@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
 const authRouter = require('./routes/auth/auth');
+const connection = require('./helpers/db.js');
 
 // I set up the application
 app.use(morgan('dev'));
