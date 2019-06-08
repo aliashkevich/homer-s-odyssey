@@ -1,4 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+// const useStyles = makeStyles(theme => ({
+//   button: {
+//     margin: theme.spacing(1),
+//   },
+//   input: {
+//     display: 'none',
+//   },
+// }));
+// const classes = useStyles();
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -47,37 +60,50 @@ export default class SignUp extends React.Component {
       <div>
         <form>
           <h1>{JSON.stringify(this.state, 1, 1)}</h1>
-          <input
+          <TextField
+            label='Email'
             type='email'
             name='email'
+            autoComplete='email'
+            margin='normal'
             onChange={this.updateInputField}
-            placeholder='Email'
           />
-          <input
+          <TextField
+            label='Password'
             type='password'
-            name='password'
+            autoComplete='current-password'
+            margin='normal'
             onChange={this.updateInputField}
-            placeholder='Password'
           />
-          <input
+          <TextField
+            label='Confirm password'
             type='password'
             name='passwordbis'
+            margin='normal'
             onChange={this.updateInputField}
-            placeholder='Confirm Password'
           />
-          <input
+          <TextField
+            label='First Name'
+            autoComplete='name'
+            margin='normal'
             type='text'
             name='name'
             onChange={this.updateInputField}
-            placeholder='First name'
           />
-          <input
+          <TextField
+            label='Last name'
             type='text'
             name='lastname'
+            autoComplete='lastname'
+            margin='normal'
             onChange={this.updateInputField}
-            placeholder='Last name'
           />
-          <input type='submit' value='Submit' onClick={this.handleSubmit} />
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={this.handleSubmit}>
+            Submit
+          </Button>
         </form>
       </div>
     );
