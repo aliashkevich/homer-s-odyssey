@@ -85,7 +85,7 @@ class SignUp extends React.Component {
     return (
       <div>
         <form className={classes.container}>
-          <h1>Sign Up!</h1>
+          <h1 style={{textAlign: 'center'}}>Sign Up!</h1>
           <TextField
             className={classes.textField}
             label='Email'
