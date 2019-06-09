@@ -1,19 +1,50 @@
 import React from 'react';
-import {MuiThemeProvider, Grid, Paper} from '@material-ui/core';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {Grid, Paper} from '@material-ui/core';
+
 import SignUp from './Components/SignUp/SignUp';
 import './App.css';
 
+const theme = createMuiTheme({
+  pallete: {
+    primary: {
+      '50': '#21412a',
+      '100': '#21412a',
+      '200': '#21412a',
+      '300': '#21412a',
+      '400': '#21412a',
+      '500': '#21412a',
+      '600': '#21412a',
+      '700': '#21412a',
+      '800': '#21412a',
+      '900': '#21412a',
+      A100: '#21412a',
+      A200: '#21412a',
+      A400: '#21412a',
+      A700: '#21412a',
+      contrastDefaultColor: 'light',
+    },
+  },
+});
+
 function App() {
   return (
-    <MuiThemeProvider>
+    <MuiThemeProvider theme={theme}>
       <Grid container alignItems='center' style={{height: '100%'}}>
         <Grid item xs={12}>
           <Paper elevation={4} style={{margin: 32}}>
-            <Grid container alignItems='center' justify='center'>
-              <Grid item xs={12} sm={6} style={{'text-align': 'center'}}>
-                <img src='http://images.innoveduc.fr/react_odyssey_homer/wildhomer.png' />
+            <Grid
+              container
+              alignItems='center'
+              justify='center'
+              style={{padding: 32}}>
+              <Grid item xs={12} sm={6} style={{textAlign: 'center'}}>
+                <img
+                  src='http://images.innoveduc.fr/react_odyssey_homer/wildhomer.png'
+                  alt='Homer Simpson'
+                />
               </Grid>
-              <Grid item xs={12} sm={6} alignContent='center'>
+              <Grid item xs={12} sm={6}>
                 <SignUp />
               </Grid>
             </Grid>

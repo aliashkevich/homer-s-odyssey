@@ -1,19 +1,24 @@
-import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React from 'react';
+import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-// const useStyles = makeStyles(theme => ({
-//   button: {
-//     margin: theme.spacing(1),
-//   },
-//   input: {
-//     display: 'none',
-//   },
-// }));
-// const classes = useStyles();
+const styles = theme => ({
+  container: {
+    display: 'grid',
+  },
+  textField: {
+    width: 'auto',
+    marginLeft: theme.spacing(3),
+  },
+  button: {
+    marginTop: theme.spacing(2),
+    width: 100,
+    justifySelf: 'end',
+  },
+});
 
-export default class SignUp extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
 
@@ -56,11 +61,13 @@ export default class SignUp extends React.Component {
   }
 
   render() {
+    const {classes} = this.props;
     return (
       <div>
-        <form>
-          <h1>{JSON.stringify(this.state, 1, 1)}</h1>
+        <form className={classes.container}>
+          <h1>Sign Up!</h1>
           <TextField
+            className={classes.textField}
             label='Email'
             type='email'
             name='email'
@@ -69,6 +76,7 @@ export default class SignUp extends React.Component {
             onChange={this.updateInputField}
           />
           <TextField
+            className={classes.textField}
             label='Password'
             type='password'
             autoComplete='current-password'
@@ -76,6 +84,7 @@ export default class SignUp extends React.Component {
             onChange={this.updateInputField}
           />
           <TextField
+            className={classes.textField}
             label='Confirm password'
             type='password'
             name='passwordbis'
@@ -83,6 +92,7 @@ export default class SignUp extends React.Component {
             onChange={this.updateInputField}
           />
           <TextField
+            className={classes.textField}
             label='First Name'
             autoComplete='name'
             margin='normal'
@@ -91,6 +101,7 @@ export default class SignUp extends React.Component {
             onChange={this.updateInputField}
           />
           <TextField
+            className={classes.textField}
             label='Last name'
             type='text'
             name='lastname'
@@ -99,6 +110,7 @@ export default class SignUp extends React.Component {
             onChange={this.updateInputField}
           />
           <Button
+            className={classes.button}
             variant='contained'
             color='primary'
             onClick={this.handleSubmit}>
@@ -109,3 +121,5 @@ export default class SignUp extends React.Component {
     );
   }
 }
+
+export default withStyles(styles)(SignUp);
