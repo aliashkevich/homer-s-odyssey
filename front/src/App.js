@@ -20,7 +20,7 @@ function App() {
               style={{padding: 32}}>
               <Grid item xs={12} sm={6} style={{textAlign: 'center'}}>
                 <img
-                  src='http://images.innoveduc.fr/react_odyssey_homer/wildhomer.png'
+                  src='https://images.innoveduc.fr/react_odyssey_homer/wildhomer.png'
                   alt='Homer Simpson'
                 />
               </Grid>
