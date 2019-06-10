@@ -26,7 +26,7 @@ module.exports = router.post('/signin', function(req, res, next) {
     function(error, results, fields) {
       if (error) res.status(500).json({flash: error.message});
       else if (results.length === 0)
-        res.status(400).json({flash: 'Invalid credentials!'});
+        res.status(404).json({flash: 'Invalid credentials!'});
       else res.status(200).json({flash: 'User has been signed in!'});
     },
   );

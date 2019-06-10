@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
+import {Link, Redirect} from 'react-router-dom';
 
 function TransitionUp(props) {
   return <Slide {...props} direction='up' />;
@@ -22,6 +23,11 @@ const styles = theme => ({
     width: 100,
     justifySelf: 'end',
   },
+  link: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(2),
+    textAlign: 'center',
+  },
 });
 
 class SignIn extends React.Component {
@@ -33,25 +39,31 @@ class SignIn extends React.Component {
       password: '',
       flash: '',
       submitted: false,
+      signedIn: false,
     };
 
     this.updateInputField = this.updateInputField.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this);
   }
 
-  updateInputField(e) {
+  updateInputField = e => {
     this.setState({
       [e.target.name]: e.target.value,
     });
-  }
+  };
 
   handleSubmit = Transition => () => {
+    const payload = {
+      email: this.state.email,
+      password: this.state.password,
+    };
     fetch('/auth/signin', {
       method: 'POST',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-      body: JSON.stringify(this.state),
+      body: JSON.stringify(payload),
     })
       .then(res => res.json())
       .then(
@@ -60,17 +72,28 @@ class SignIn extends React.Component {
             flash: res.flash,
             submitted: true,
             Transition,
+            signedIn: true,
           }),
         err =>
           this.setState({
             flash: err.flash,
             submitted: true,
             Transition,
+            signedIn: false,
+            email: '',
+            password: '',
           }),
       );
   };
+
   handleClose = () => {
     this.setState({submitted: false});
+  };
+
+  renderRedirect = () => {
+    if (this.state.signedIn) {
+      return <Redirect to='/profile' />;
+    }
   };
 
   render() {
@@ -87,6 +110,7 @@ class SignIn extends React.Component {
             autoComplete='email'
             margin='normal'
             onChange={this.updateInputField}
+            value={this.state.email}
           />
           <TextField
             className={classes.textField}
@@ -96,6 +120,7 @@ class SignIn extends React.Component {
             margin='normal'
             onChange={this.updateInputField}
             name='password'
+            value={this.state.password}
           />
           <Button
             className={classes.button}
@@ -104,6 +129,7 @@ class SignIn extends React.Component {
             onClick={this.handleSubmit(TransitionUp)}>
             Submit
           </Button>
+          {/* {this.renderRedirect()} */}
           <Snackbar
             open={this.state.submitted}
             onClose={this.handleClose}
@@ -113,6 +139,9 @@ class SignIn extends React.Component {
             }}
             message={<span id='message-id'>{this.state.flash}</span>}
           />
+          <Link to='/signup' className={classes.link}>
+            Sign Up
+          </Link>
         </form>
       </React.Fragment>
     );

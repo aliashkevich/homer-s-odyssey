@@ -1,9 +1,11 @@
 import React from 'react';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {Grid, Paper} from '@material-ui/core';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import SignUp from './Components/SignUp/SignUp';
 import SignIn from './Components/SignIn/SignIn';
+import Profile from './Components/Profile/Profile';
 import './App.css';
 
 const theme = createMuiTheme();
@@ -26,7 +28,14 @@ function App() {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <SignIn />
+                <BrowserRouter>
+                  <Switch>
+                    <Route exact path='/' component={SignIn} />
+                    <Route path='/signup' component={SignUp} />
+                    <Route path='/signin' component={SignIn} />
+                    <Route path='/profile' component={Profile} />
+                  </Switch>
+                </BrowserRouter>
               </Grid>
             </Grid>
           </Paper>
