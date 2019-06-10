@@ -73,12 +73,18 @@ class SignUp extends React.Component {
       .then(res => res.json())
       .then(
         res =>
-          this.setState({
-            flash: res.flash,
-            submitted: true,
-            Transition,
-            signedUp: true,
-          }),
+          res.signedUp === true
+            ? this.setState({
+                submitted: true,
+                Transition,
+                signedUp: true,
+              })
+            : this.setState({
+                flash: res.flash,
+                submitted: true,
+                Transition,
+                signedUp: false,
+              }),
         err =>
           this.setState({
             flash: err.flash,
@@ -161,7 +167,7 @@ class SignUp extends React.Component {
             onClick={this.handleSubmit(TransitionUp)}>
             Submit
           </Button>
-          {/* {this.renderRedirect()} */}
+          {this.renderRedirect()}
           <Snackbar
             open={this.state.submitted}
             onClose={this.handleClose}

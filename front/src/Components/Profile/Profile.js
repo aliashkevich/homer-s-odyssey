@@ -3,6 +3,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
+import {withRouter} from 'react-router-dom';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -58,4 +59,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+export default withRouter(Profile);

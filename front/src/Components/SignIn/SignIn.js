@@ -66,23 +66,29 @@ class SignIn extends React.Component {
       body: JSON.stringify(payload),
     })
       .then(res => res.json())
-      .then(
-        res =>
-          this.setState({
-            flash: res.flash,
-            submitted: true,
-            Transition,
-            signedIn: true,
-          }),
-        err =>
-          this.setState({
-            flash: err.flash,
-            submitted: true,
-            Transition,
-            signedIn: false,
-            email: '',
-            password: '',
-          }),
+      .then(res =>
+        res.signedIn === true
+          ? this.setState({
+              submitted: true,
+              Transition,
+              signedIn: true,
+            })
+          : this.setState({
+              flash: res.flash,
+              submitted: true,
+              Transition,
+              signedIn: false,
+              email: '',
+              password: '',
+            }),
+      )
+      .catch(err =>
+        this.setState({
+          flash: err.flash,
+          submitted: true,
+          Transition,
+          signedIn: false,
+        }),
       );
   };
 
@@ -127,9 +133,14 @@ class SignIn extends React.Component {
             variant='contained'
             color='primary'
             onClick={this.handleSubmit(TransitionUp)}>
+            {this.state.signedIn ? (
+              <Link to='/profile' />
+            ) : (
+              <Link to='/signin' />
+            )}
             Submit
           </Button>
-          {/* {this.renderRedirect()} */}
+          {this.renderRedirect()}
           <Snackbar
             open={this.state.submitted}
             onClose={this.handleClose}
