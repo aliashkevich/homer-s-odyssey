@@ -24,16 +24,13 @@ const styles = theme => ({
   },
 });
 
-class SignUp extends React.Component {
+class SignIn extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: 'mon@email.com',
-      password: 'monPassw0rd',
-      passwordbis: 'monPassw0rd',
-      name: 'James',
-      lastname: 'Bond',
+      email: '',
+      password: '',
       flash: '',
       submitted: false,
     };
@@ -49,7 +46,7 @@ class SignUp extends React.Component {
   }
 
   handleSubmit = Transition => () => {
-    fetch('/auth/signup', {
+    fetch('/auth/signin', {
       method: 'POST',
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -72,7 +69,6 @@ class SignUp extends React.Component {
           }),
       );
   };
-
   handleClose = () => {
     this.setState({submitted: false});
   };
@@ -82,7 +78,7 @@ class SignUp extends React.Component {
     return (
       <React.Fragment>
         <form className={classes.container}>
-          <h1 style={{textAlign: 'center'}}>Sign Up!</h1>
+          <h1 style={{textAlign: 'center'}}>Sign In!</h1>
           <TextField
             className={classes.textField}
             label='Email'
@@ -99,32 +95,7 @@ class SignUp extends React.Component {
             autoComplete='current-password'
             margin='normal'
             onChange={this.updateInputField}
-          />
-          <TextField
-            className={classes.textField}
-            label='Confirm password'
-            type='password'
-            name='passwordbis'
-            margin='normal'
-            onChange={this.updateInputField}
-          />
-          <TextField
-            className={classes.textField}
-            label='First Name'
-            autoComplete='name'
-            margin='normal'
-            type='text'
-            name='name'
-            onChange={this.updateInputField}
-          />
-          <TextField
-            className={classes.textField}
-            label='Last name'
-            type='text'
-            name='lastname'
-            autoComplete='lastname'
-            margin='normal'
-            onChange={this.updateInputField}
+            name='password'
           />
           <Button
             className={classes.button}
@@ -148,4 +119,4 @@ class SignUp extends React.Component {
   }
 }
 
-export default withStyles(styles)(SignUp);
+export default withStyles(styles)(SignIn);

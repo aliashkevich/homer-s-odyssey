@@ -18,3 +18,16 @@ module.exports = router.post('/signup', function(req, res, next) {
     else res.status(200).json({flash: 'User has been signed up!'});
   });
 });
+
+module.exports = router.post('/signin', function(req, res, next) {
+  connection.query(
+    'SELECT * FROM users WHERE email=? AND password=?',
+    [req.body.email, req.body.password],
+    function(error, results, fields) {
+      if (error) res.status(500).json({flash: error.message});
+      else if (results.length === 0)
+        res.status(400).json({flash: 'Invalid credentials!'});
+      else res.status(200).json({flash: 'User has been signed in!'});
+    },
+  );
+});

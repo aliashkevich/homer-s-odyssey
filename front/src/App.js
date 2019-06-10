@@ -3,6 +3,7 @@ import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {Grid, Paper} from '@material-ui/core';
 
 import SignUp from './Components/SignUp/SignUp';
+import SignIn from './Components/SignIn/SignIn';
 import './App.css';
 
 const theme = createMuiTheme();
@@ -25,7 +26,7 @@ function App() {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <SignUp />
+                <SignIn />
               </Grid>
             </Grid>
           </Paper>
