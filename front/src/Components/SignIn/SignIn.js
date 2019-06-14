@@ -39,7 +39,7 @@ class SignIn extends React.Component {
       password: '',
       flash: '',
       submitted: false,
-      signedIn: false,
+      token: '',
     };
 
     this.updateInputField = this.updateInputField.bind(this);
@@ -67,17 +67,16 @@ class SignIn extends React.Component {
     })
       .then(res => res.json())
       .then(res =>
-        res.signedIn === true
+        res.token !== ''
           ? this.setState({
               submitted: true,
               Transition,
-              signedIn: true,
+              token: res.token,
             })
           : this.setState({
               flash: res.flash,
               submitted: true,
               Transition,
-              signedIn: false,
               email: '',
               password: '',
             }),
@@ -87,7 +86,6 @@ class SignIn extends React.Component {
           flash: err.flash,
           submitted: true,
           Transition,
-          signedIn: false,
         }),
       );
   };
@@ -97,8 +95,12 @@ class SignIn extends React.Component {
   };
 
   renderRedirect = () => {
-    if (this.state.signedIn) {
-      return <Redirect to='/profile' />;
+    if (this.state.token !== '') {
+      return (
+        <Redirect
+          to={{pathname: '/profile', state: {token: this.state.token}}}
+        />
+      );
     }
   };
 
@@ -133,7 +135,7 @@ class SignIn extends React.Component {
             variant='contained'
             color='primary'
             onClick={this.handleSubmit(TransitionUp)}>
-            {this.state.signedIn ? (
+            {this.state.token !== '' ? (
               <Link to='/profile' />
             ) : (
               <Link to='/signin' />
