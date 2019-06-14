@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const connection = require('../../helpers/db.js');
 const bcrypt = require('bcrypt');
+const passport = require('./passport');
 
 module.exports = router.post('/signup', function(req, res, next) {
   const args = {
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 10),
+    password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10)),
     name: req.body.name,
     lastname: req.body.lastname,
   };
@@ -20,15 +21,10 @@ module.exports = router.post('/signup', function(req, res, next) {
   });
 });
 
-module.exports = router.post('/signin', function(req, res, next) {
-  connection.query(
-    'SELECT password FROM users WHERE email=?',
-    [req.body.email],
-    function(error, results, fields) {
-      if (error) res.send(500).json({flash: error.message});
-      else if (bcrypt.compareSync(req.body.password, results[0].password))
-        res.status(200).json({signedIn: true});
-      else res.status(404).json({flash: 'Invalid credentials!'});
-    },
-  );
+module.exports = router.post('/signin', function(req, res) {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) res.status(500).json({flash: err});
+    if (!user) res.status(400).json({flash: info.message});
+    if (user) res.status(200).json({signedIn: true});
+  })(req, res);
 });
