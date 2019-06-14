@@ -2,6 +2,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const connection = require('../../helpers/db.js');
+const JWTStrategy = require('passport-jwt').Strategy,
+  ExtractJWT = require('passport-jwt').ExtractJwt;
 
 module.exports = passport.use(
   new LocalStrategy(
@@ -15,12 +17,25 @@ module.exports = passport.use(
         error,
         results,
       ) {
+        console.log(results[0] + '!!!');
         if (error) cb(error);
         else if (results.length === 0)
           cb(null, false, {message: 'Incorrect email or password.'});
         else if (bcrypt.compareSync(password, results[0].password))
           cb(null, results[0]);
       });
+    },
+  ),
+);
+
+module.exports = passport.use(
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      secretOrKey: 'your_jwt_secret',
+    },
+    function(jwtPayload, cb) {
+      return cb(null, jwtPayload);
     },
   ),
 );

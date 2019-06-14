@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const authRouter = require('./routes/auth/auth');
+const passport = require('./routes/auth/passport');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -12,6 +13,13 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authRouter);
+
+app.get('/profile', passport.authenticate('jwt', {session: false}), function(
+  req,
+  res,
+) {
+  res.send(req.user);
+});
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
