@@ -3,9 +3,9 @@ import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {Grid, Paper} from '@material-ui/core';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
-import SignUp from './Components/SignUp/SignUp';
-import SignIn from './Components/SignIn/SignIn';
-import Profile from './Components/Profile/Profile';
+import SignUp from './containers/SignUp';
+import SignIn from './containers/SignIn';
+import Profile from './containers/Profile';
 import './App.css';
 
 const theme = createMuiTheme();
