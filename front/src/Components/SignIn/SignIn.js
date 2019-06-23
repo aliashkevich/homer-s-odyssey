@@ -39,7 +39,7 @@ class SignIn extends React.Component {
       password: '',
       flash: '',
       submitted: false,
-      token: '',
+      token: undefined,
     };
 
     this.updateInputField = this.updateInputField.bind(this);
@@ -67,7 +67,7 @@ class SignIn extends React.Component {
     })
       .then(res => res.json())
       .then(res =>
-        res.token !== ''
+        res.token
           ? this.setState({
               submitted: true,
               Transition,
@@ -95,13 +95,9 @@ class SignIn extends React.Component {
   };
 
   renderRedirect = () => {
-    if (this.state.token !== '') {
-      return (
-        <Redirect
-          to={{pathname: '/profile', state: {token: this.state.token}}}
-        />
-      );
-    }
+    return (
+      <Redirect to={{pathname: '/profile', state: {token: this.state.token}}} />
+    );
   };
 
   render() {
@@ -135,14 +131,9 @@ class SignIn extends React.Component {
             variant='contained'
             color='primary'
             onClick={this.handleSubmit(TransitionUp)}>
-            {this.state.token !== '' ? (
-              <Link to='/profile' />
-            ) : (
-              <Link to='/signin' />
-            )}
             Submit
           </Button>
-          {this.renderRedirect()}
+          {this.state.token !== undefined ? this.renderRedirect() : null}
           <Snackbar
             open={this.state.submitted}
             onClose={this.handleClose}

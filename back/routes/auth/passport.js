@@ -17,12 +17,14 @@ module.exports = passport.use(
         error,
         results,
       ) {
-        console.log(results[0] + '!!!');
         if (error) cb(error);
         else if (results.length === 0)
-          cb(null, false, {message: 'Incorrect email or password.'});
+          cb(null, false, {message: 'Incorrect email.'});
+        else if (!bcrypt.compareSync(password, results[0].password))
+          cb(null, false, {message: 'Incorrect password.'});
         else if (bcrypt.compareSync(password, results[0].password))
           cb(null, results[0]);
+        else cb(null, false, {message: 'Incorrect email or  password.'});
       });
     },
   ),

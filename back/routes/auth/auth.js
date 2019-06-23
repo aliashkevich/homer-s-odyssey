@@ -24,9 +24,8 @@ module.exports = router.post('/signup', function(req, res, next) {
 
 module.exports = router.post('/signin', function(req, res) {
   passport.authenticate('local', (err, user, info) => {
-    console.log(user);
     if (err) res.status(500).json({flash: err});
-    if (!user) res.status(400).json({flash: info.message});
+    if (!user) res.status(401).json({flash: info.message});
     if (user) {
       var data = {
         email: user.email,
