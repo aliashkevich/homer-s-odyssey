@@ -3,12 +3,12 @@ export default function(state = {}, action) {
     case 'CREATE_SESSION':
       return {
         ...state,
-        token: action.token,
+        user: action.user,
       };
     case 'DELETE_SESSION':
       return {
         ...state,
-        token: '',
+        user: '',
       };
     default:
       return state;

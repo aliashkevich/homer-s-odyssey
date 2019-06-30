@@ -8,6 +8,7 @@ import requireNotAuth from './hoc/requireNotAuth';
 import SignUp from './containers/SignUp';
 import SignIn from './containers/SignIn';
 import Profile from './containers/Profile';
+import PopUp from './containers/PopUp';
 import './App.css';
 
 const theme = createMuiTheme();
@@ -38,6 +39,7 @@ function App() {
                     <Route path='/profile' component={requireAuth(Profile)} />
                   </Switch>
                 </BrowserRouter>
+                <PopUp />
               </Grid>
             </Grid>
           </Paper>

@@ -2,7 +2,6 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
 import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -38,15 +37,12 @@ class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
-      submitted: false,
     };
 
     this.updateInputField = this.updateInputField.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.renderRedirect = this.renderRedirect.bind(this);
   }
-
-  componentDidMount() {}
 
   updateInputField = e => {
     this.setState({
@@ -75,12 +71,7 @@ class SignIn extends React.Component {
           message: res.flash,
         }),
       )
-      .then(this.setState({submitted: true, Transition}))
       .catch(err => console.log(err));
-  };
-
-  handleClose = () => {
-    this.setState({submitted: false});
   };
 
   renderRedirect = () => {
@@ -123,19 +114,7 @@ class SignIn extends React.Component {
           <Link to='/signup' className={classes.link}>
             Sign Up
           </Link>
-          {this.props.authenticated ? (
-            this.renderRedirect()
-          ) : (
-            <Snackbar
-              open={this.state.submitted}
-              onClose={this.handleClose}
-              TransitionComponent={this.state.Transition}
-              ContentProps={{
-                'aria-describedby': 'message-id',
-              }}
-              message={<span id='message-id'>{this.props.flash}</span>}
-            />
-          )}
+          {this.props.authenticated ? this.renderRedirect() : null}
         </form>
       </React.Fragment>
     );
@@ -144,8 +123,6 @@ class SignIn extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    flash: state.auth.message,
-    user: state.auth.user,
     token: state.auth.token,
   };
 }

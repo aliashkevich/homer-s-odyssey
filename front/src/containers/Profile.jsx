@@ -11,7 +11,6 @@ class Profile extends React.Component {
     super(props);
 
     this.state = {
-      token: '',
       profile: {
         email: '',
         name: '',
@@ -19,15 +18,11 @@ class Profile extends React.Component {
       },
     };
 
-    this.loadProfile = this.loadProfile.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
-    this.loadProfile();
-  }
-
-  loadProfile() {
+    console.log('TOKEN: ' + this.props.token);
     fetch('/profile', {
       method: 'GET',
       headers: new Headers({
@@ -39,9 +34,9 @@ class Profile extends React.Component {
       .then(res =>
         this.setState({
           profile: {
-            email: this.props.user.email,
-            name: this.props.user.name,
-            lastname: this.props.user.lastname,
+            email: res.email,
+            name: res.name,
+            lastname: res.lastname,
           },
         }),
       )
@@ -98,8 +93,7 @@ class Profile extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    flash: state.auth.message,
-    user: state.auth.user,
+    user: state.user.user,
     token: state.auth.token,
   };
 }
