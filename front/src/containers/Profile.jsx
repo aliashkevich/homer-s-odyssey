@@ -3,7 +3,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
-import {withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 class Profile extends React.Component {
@@ -49,6 +49,9 @@ class Profile extends React.Component {
   }
 
   handleSignOut() {
+    this.props.dispatch({
+      type: 'DELETE_SESSION',
+    });
     this.props.history.push('/signin');
   }
 
@@ -82,6 +85,12 @@ class Profile extends React.Component {
           onClick={this.handleSignOut}>
           Sign Out
         </Button>
+        <p>
+          <Link to='/signin'>Sign In</Link>
+        </p>
+        <p>
+          <Link to='/signup'>Sign Up</Link>
+        </p>
       </React.Fragment>
     );
   }

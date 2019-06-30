@@ -46,6 +46,8 @@ class SignIn extends React.Component {
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
+  componentDidMount() {}
+
   updateInputField = e => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -118,19 +120,22 @@ class SignIn extends React.Component {
             onClick={this.handleSubmit(TransitionUp)}>
             Submit
           </Button>
-          {this.props.authenticated ? this.renderRedirect() : null}
-          <Snackbar
-            open={this.state.submitted}
-            onClose={this.handleClose}
-            TransitionComponent={this.state.Transition}
-            ContentProps={{
-              'aria-describedby': 'message-id',
-            }}
-            message={<span id='message-id'>{this.props.flash}</span>}
-          />
           <Link to='/signup' className={classes.link}>
             Sign Up
           </Link>
+          {this.props.authenticated ? (
+            this.renderRedirect()
+          ) : (
+            <Snackbar
+              open={this.state.submitted}
+              onClose={this.handleClose}
+              TransitionComponent={this.state.Transition}
+              ContentProps={{
+                'aria-describedby': 'message-id',
+              }}
+              message={<span id='message-id'>{this.props.flash}</span>}
+            />
+          )}
         </form>
       </React.Fragment>
     );

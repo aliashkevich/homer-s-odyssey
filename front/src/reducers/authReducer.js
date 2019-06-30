@@ -7,6 +7,13 @@ export default function(state = {}, action) {
         user: action.user,
         message: action.message,
       };
+    case 'DELETE_SESSION':
+      return {
+        ...state,
+        token: '',
+        user: '',
+        message: '',
+      };
     default:
       return state;
   }
