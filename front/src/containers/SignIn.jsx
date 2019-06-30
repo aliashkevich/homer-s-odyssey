@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
 import {Link, Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 function TransitionUp(props) {
   return <Slide {...props} direction='up' />;
@@ -37,9 +38,7 @@ class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
-      flash: '',
       submitted: false,
-      token: undefined,
     };
 
     this.updateInputField = this.updateInputField.bind(this);
@@ -67,27 +66,15 @@ class SignIn extends React.Component {
     })
       .then(res => res.json())
       .then(res =>
-        res.token
-          ? this.setState({
-              submitted: true,
-              Transition,
-              token: res.token,
-            })
-          : this.setState({
-              flash: res.flash,
-              submitted: true,
-              Transition,
-              email: '',
-              password: '',
-            }),
-      )
-      .catch(err =>
-        this.setState({
-          flash: err.flash,
-          submitted: true,
-          Transition,
+        this.props.dispatch({
+          type: 'CREATE_SESSION',
+          user: res.data,
+          token: res.token,
+          message: res.flash,
         }),
-      );
+      )
+      .then(this.setState({submitted: true, Transition}))
+      .catch(err => console.log(err));
   };
 
   handleClose = () => {
@@ -95,9 +82,7 @@ class SignIn extends React.Component {
   };
 
   renderRedirect = () => {
-    return (
-      <Redirect to={{pathname: '/profile', state: {token: this.state.token}}} />
-    );
+    return <Redirect to={{pathname: '/profile'}} />;
   };
 
   render() {
@@ -133,7 +118,7 @@ class SignIn extends React.Component {
             onClick={this.handleSubmit(TransitionUp)}>
             Submit
           </Button>
-          {this.state.token !== undefined ? this.renderRedirect() : null}
+          {this.props.authenticated ? this.renderRedirect() : null}
           <Snackbar
             open={this.state.submitted}
             onClose={this.handleClose}
@@ -141,7 +126,7 @@ class SignIn extends React.Component {
             ContentProps={{
               'aria-describedby': 'message-id',
             }}
-            message={<span id='message-id'>{this.state.flash}</span>}
+            message={<span id='message-id'>{this.props.flash}</span>}
           />
           <Link to='/signup' className={classes.link}>
             Sign Up
@@ -152,4 +137,18 @@ class SignIn extends React.Component {
   }
 }
 
-export default withStyles(styles)(SignIn);
+function mapStateToProps(state) {
+  return {
+    flash: state.auth.message,
+    user: state.auth.user,
+    token: state.auth.token,
+  };
+}
+
+const reduxConnector = connect(
+  mapStateToProps,
+  null,
+);
+
+SignIn = withStyles(styles)(SignIn);
+export default reduxConnector(SignIn);

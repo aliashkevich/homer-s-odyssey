@@ -4,14 +4,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import {withRouter} from 'react-router-dom';
-import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 class Profile extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: true,
       token: '',
       profile: {
         email: '',
@@ -25,22 +24,7 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    var token = '';
-
-    if (
-      this.props.location &&
-      this.props.location.state &&
-      this.props.location.state.token
-    ) {
-      token = this.props.location.state.token;
-    }
-
-    this.setState(
-      {
-        token: token,
-      },
-      this.loadProfile,
-    );
+    this.loadProfile();
   }
 
   loadProfile() {
@@ -48,33 +32,21 @@ class Profile extends React.Component {
       method: 'GET',
       headers: new Headers({
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.state.token,
+        Authorization: 'Bearer ' + this.props.token,
       }),
     })
       .then(res => res.json())
       .then(res =>
         this.setState({
-          loading: false,
           profile: {
-            email: res.email,
-            name: res.name,
-            lastname: res.lastname,
+            email: this.props.user.email,
+            name: this.props.user.name,
+            lastname: this.props.user.lastname,
           },
         }),
       )
-      .catch(err =>
-        this.setState({
-          token: '',
-          loading: false,
-        }),
-      );
+      .catch(err => console.log(err));
   }
-
-  renderRedirect = () => {
-    if (this.state.token === '' && !this.state.loading) {
-      return <Redirect to='/signin' />;
-    }
-  };
 
   handleSignOut() {
     this.props.history.push('/signin');
@@ -88,19 +60,19 @@ class Profile extends React.Component {
           <ListItem>
             <ListItemText
               primary={this.state.profile.email}
-              secondary='my email'
+              secondary='Email'
             />
           </ListItem>
           <ListItem>
             <ListItemText
               primary={this.state.profile.name}
-              secondary='my first name'
+              secondary='First name'
             />
           </ListItem>
           <ListItem>
             <ListItemText
               primary={this.state.profile.lastname}
-              secondary='my last name'
+              secondary='Last name'
             />
           </ListItem>
         </List>
@@ -110,10 +82,23 @@ class Profile extends React.Component {
           onClick={this.handleSignOut}>
           Sign Out
         </Button>
-        {this.renderRedirect()}
       </React.Fragment>
     );
   }
 }
 
-export default withRouter(Profile);
+function mapStateToProps(state) {
+  return {
+    flash: state.auth.message,
+    user: state.auth.user,
+    token: state.auth.token,
+  };
+}
+
+const reduxConnector = connect(
+  mapStateToProps,
+  null,
+);
+
+Profile = withRouter(Profile);
+export default reduxConnector(Profile);

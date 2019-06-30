@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
 import {Link, Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 function TransitionUp(props) {
   return <Slide {...props} direction='up' />;
@@ -186,4 +187,18 @@ class SignUp extends React.Component {
   }
 }
 
-export default withStyles(styles)(SignUp);
+function mapStateToProps(state) {
+  return {
+    flash: state.auth.message,
+    user: state.auth.user,
+    token: state.auth.token,
+  };
+}
+
+const reduxConnector = connect(
+  mapStateToProps,
+  null,
+);
+
+SignUp = withStyles(styles)(SignUp);
+export default reduxConnector(SignUp);

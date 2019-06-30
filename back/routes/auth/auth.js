@@ -34,7 +34,8 @@ module.exports = router.post('/signin', function(req, res) {
       };
 
       const token = jwt.sign(data, 'your_jwt_secret');
-      return res.status(200).json({data, token});
+      const flash = 'Sucessful login!';
+      return res.status(200).json({data, token, flash});
     }
   })(req, res);
 });
